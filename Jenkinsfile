@@ -4,6 +4,7 @@ pipeline {
     environment {
         COMPOSE_FILE = 'docker-compose.yml'  // Path to your docker-compose.yml
         TOMCAT_PORT = '9092'  // Define your Tomcat port here
+        MYSQL_PORT = '3306'   // Define your MySQL port here
     }
 
     stages {
@@ -11,6 +12,22 @@ pipeline {
             steps {
                 // Checkout the source code, including docker-compose.yml
                 checkout scm
+            }
+        }
+
+        stage('Kill Existing Processes') {
+            steps {
+                script {
+                    // Kill processes using port 3306 and 9092
+                    bat '''
+                    FOR /F "tokens=5" %%a IN ('netstat -ano ^| findstr :%MYSQL_PORT%') DO (
+                        taskkill /F /PID %%a
+                    )
+                    FOR /F "tokens=5" %%a IN ('netstat -ano ^| findstr :%TOMCAT_PORT%') DO (
+                        taskkill /F /PID %%a
+                    )
+                    '''
+                }
             }
         }
 
