@@ -20,10 +20,13 @@ FROM tomcat:9-jre11
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copy the WAR file from the build stage to Tomcat's webapps directory
-COPY --from=BUILD_IMAGE /hibernate-project1/target/hibernate-project.war /usr/local/tomcat/webapps/
+COPY --from=BUILD_IMAGE /hibernate-project1/target/hibernate-project.war /usr/local/tomcat/webapps/ROOT.war
 
-# Expose Tomcat's default port
-EXPOSE 8080
+# Change Tomcat's server port to 9092
+RUN sed -i 's/8080/9092/g' /usr/local/tomcat/conf/server.xml
+
+# Expose Tomcat's new port (9092)
+EXPOSE 9092
 
 # Start Tomcat
 CMD ["catalina.sh", "run"]

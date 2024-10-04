@@ -26,7 +26,7 @@ public class RegisterServlet extends HttpServlet {
         String lastname = request.getParameter("lastname");
 
         // Create Users object
-        Users user = new Users(firstname, lastname, password, username);
+        Users user = new Users(username,password,firstname, lastname);
 
         // Hibernate code to save the user
         SessionFactory factory = new Configuration()
