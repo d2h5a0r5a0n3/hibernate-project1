@@ -42,33 +42,6 @@ pipeline {
             }
         }
 
-        stage('Wait for Tomcat') {
-            steps {
-                script {
-                    // Wait for Tomcat to start
-                    echo "Waiting for Tomcat to start..."
-                    sleep(time: 30, unit: 'SECONDS') // Adjust time as necessary
-                }
-            }
-        }
-
-        stage('Check Tomcat Status') {
-            steps {
-                script {
-                    // Define the URL to check
-                    def tomcatUrl = 'http://localhost:9092/register'
-                    def responseStatus = bat(script: "curl -s -o /dev/null -w \"%{http_code}\" ${tomcatUrl}", returnStdout: true).trim()
-
-                    // Check if Tomcat is running
-                    if (responseStatus == '200') {
-                        echo "Tomcat is up and running on ${tomcatUrl}"
-                    } else {
-                        error("Tomcat is not accessible at ${tomcatUrl}, received HTTP status: ${responseStatus}")
-                    }
-                }
-            }
-        }
-
         stage('Show MySQL Data of Users') {
             steps {
                 script {
@@ -83,11 +56,23 @@ pipeline {
                     // MySQL command to retrieve user data
                     def query = 'SELECT * FROM Users;' // Adjust this query based on your table structure
                     def mysqlCommand = "mysql -u ${dbUser} -p${dbPassword} -D ${dbName} -e \'${query}\'"
+                    // def mysqlCommand = 'mysql -u ${dbUser} -p${dbPassword} -D ${dbName} -e \"${query}\"'
+
 
                     echo "Fetching MySQL data of users from container ${mysqlContainerName}..."
                     
                     // Execute the MySQL command inside the MySQL container
                     bat(script: "docker exec ${mysqlContainerName} sh -c \"${mysqlCommand}\"")
+                }
+            }
+        }
+
+        stage('Wait for Tomcat') {
+            steps {
+                script {
+                    // Optionally add logic to wait for Tomcat to be up
+                    echo "Waiting for Tomcat to start..."
+                    sleep(time: 30, unit: 'SECONDS') // Adjust time as necessary
                 }
             }
         }
