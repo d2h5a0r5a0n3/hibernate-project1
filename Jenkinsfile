@@ -55,8 +55,8 @@ pipeline {
                     
                     // MySQL command to retrieve user data
                     def query = 'SELECT * FROM Users;' // Adjust this query based on your table structure
-                    // def mysqlCommand = "mysql -u ${dbUser} -p${dbPassword} -D ${dbName} -e \"${query}\""
-                    def mysqlCommand = 'mysql -u ${dbUser} -p${dbPassword} -D ${dbName} -e \"${query}\"'
+                    def mysqlCommand = "mysql -u ${dbUser} -p${dbPassword} -D ${dbName} -e \'${query}\'"
+                    // def mysqlCommand = 'mysql -u ${dbUser} -p${dbPassword} -D ${dbName} -e \"${query}\"'
 
 
                     echo "Fetching MySQL data of users from container ${mysqlContainerName}..."
