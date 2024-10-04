@@ -14,9 +14,6 @@ WORKDIR /hibernate-project1
 RUN mvn clean install
 RUN mvn clean package
 
-# Remove the target folder to reduce image size
-RUN rm -rf /hibernate-project1/target
-
 # Stage 2: Runtime Stage
 FROM tomcat:9-jre11
 
@@ -31,6 +28,9 @@ RUN sed -i 's/8080/9092/g' /usr/local/tomcat/conf/server.xml
 
 # Expose Tomcat's new port (9092)
 EXPOSE 9092
+
+# Remove the target folder to reduce image size
+RUN rm -rf /hibernate-project1/target
 
 # Start Tomcat
 CMD ["catalina.sh", "run"]
