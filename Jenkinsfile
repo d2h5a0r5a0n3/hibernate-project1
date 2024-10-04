@@ -61,13 +61,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            script {
-                // Bring down the Docker Compose setup
-                // bat 'docker-compose down'
-            }
-        }
-    }
 }
