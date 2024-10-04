@@ -66,7 +66,7 @@ pipeline {
         always {
             script {
                 // Bring down the Docker Compose setup
-                bat 'docker-compose down'
+                // bat 'docker-compose down'
             }
         }
     }
