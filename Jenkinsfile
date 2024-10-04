@@ -12,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Run docker-compose to build and start services
-                    sh 'docker-compose up -d'
+                    sh 'docker-compose build'
                 }
             }
         }
