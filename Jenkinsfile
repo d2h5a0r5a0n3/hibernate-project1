@@ -42,6 +42,26 @@ pipeline {
             }
         }
 
+        stage('Show MySQL Data of Users') {
+            steps {
+                script {
+                    // Database credentials
+                    def dbUser = 'hibernate-user' // MySQL username
+                    def dbPassword = 'Dharan@123' // MySQL password
+                    def dbName = 'hibernate' // MySQL database name
+                    
+                    // MySQL command to retrieve user data
+                    def query = 'SELECT * FROM Users;' // Adjust this query based on your table structure
+                    def mysqlCommand = "mysql -u ${dbUser} -p${dbPassword} -D ${dbName} -e \"${query}\""
+
+                    echo "Fetching MySQL data of users..."
+                    
+                    // Execute the MySQL command
+                    bat(script: mysqlCommand)
+                }
+            }
+        }
+
         stage('Wait for Tomcat') {
             steps {
                 script {
@@ -58,6 +78,15 @@ pipeline {
                     // Example to open Tomcat URL (if needed)
                     echo "Tomcat is expected to be running on http://localhost:9092"
                 }
+            }
+        }
+    }
+    
+    post {
+        always {
+            script {
+                // Bring down the Docker Compose setup
+                bat 'docker-compose down'
             }
         }
     }
