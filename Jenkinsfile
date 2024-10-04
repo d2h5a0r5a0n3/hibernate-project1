@@ -1,26 +1,71 @@
 pipeline {
     agent any
 
-    environment {
-        COMPOSE_FILE = 'docker-compose.yml'  // Path to your docker-compose.yml
-        TOMCAT_PORT = '9092'  // Define your Tomcat port here
-        MYSQL_PORT = '3306'   // Define your MySQL port here
-    }
-
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Check and Stop Existing Containers') {
+            steps {
+                script {
+                    // Check if the Docker daemon is running
+                    def dockerStatus = bat(script: 'docker info', returnStatus: true)
+
+                    if (dockerStatus != 0) {
+                        error("Docker daemon is not running.")
+                    }
+                    
+                    // Stop containers on port 3306 and 9092 if they are running
+                    try {
+                        bat(script: 'docker ps --filter "publish=3306" -q | ForEach-Object { docker stop $_ }')
+                    } catch (Exception e) {
+                        echo "No containers running on port 3306."
+                    }
+                    try {
+                        bat(script: 'docker ps --filter "publish=9092" -q | ForEach-Object { docker stop $_ }')
+                    } catch (Exception e) {
+                        echo "No containers running on port 9092."
+                    }
+                }
+            }
+        }
+
         stage('Run Docker Compose') {
             steps {
                 script {
-                    // Run docker-compose to build and start services
-                    sh 'docker-compose build'
+                    // Run Docker Compose to start your containers
+                    bat 'docker-compose up -d'
+                }
+            }
+        }
+
+        stage('Wait for Tomcat') {
+            steps {
+                script {
+                    // Optionally add logic to wait for Tomcat to be up
+                    echo "Waiting for Tomcat to start..."
+                    sleep(time: 30, unit: 'SECONDS') // Adjust time as necessary
+                }
+            }
+        }
+
+        stage('Open Tomcat URL') {
+            steps {
+                script {
+                    // Example to open Tomcat URL (if needed)
+                    echo "Tomcat is expected to be running on http://localhost:9092"
                 }
             }
         }
     }
+
     post {
         always {
-            // Stop and clean up Docker containers after the job
             script {
+                // Bring down the Docker Compose setup
                 bat 'docker-compose down'
             }
         }
