@@ -1,10 +1,10 @@
 # Stage 1: Build Stage
 FROM openjdk:11 AS BUILD_IMAGE
 
-# Install Maven
+# Install Maven and Git
 RUN apt update && apt install -y maven git
 
-RUN git config --global http.postBuffer 1048576000  # 1 GB
+RUN git config --global http.postBuffer 1048576000  # Set Git post buffer size
 
 # Clone the repository
 RUN git clone --depth=1 https://github.com/d2h5a0r5a0n3/hibernate-project1.git
@@ -14,6 +14,8 @@ WORKDIR /hibernate-project1
 RUN mvn clean install
 RUN mvn clean package
 
+# Remove the target folder to reduce image size
+RUN rm -rf /hibernate-project1/target
 
 # Stage 2: Runtime Stage
 FROM tomcat:9-jre11
