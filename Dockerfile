@@ -7,7 +7,7 @@ RUN apt update && apt install -y maven git
 RUN git config --global http.postBuffer 1048576000  # 1 GB
 
 # Clone the repository
-RUN git clone https://github.com/d2h5a0r5a0n3/hibernate-project1.git
+RUN git clone --depth=1 https://github.com/d2h5a0r5a0n3/hibernate-project1.git
 
 # Change directory and build the project
 WORKDIR /hibernate-project1

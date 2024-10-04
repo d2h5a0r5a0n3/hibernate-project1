@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "8080:9092"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://192.168.56.25:3306/hibernate
       - SPRING_DATASOURCE_USERNAME=hibernate-user
