@@ -54,7 +54,6 @@ pipeline {
             steps {
                 script {
                     echo "Waiting for Tomcat to start..."
-                    sleep(time: 30, unit: 'SECONDS')
                 }
             }
         }
