@@ -1,4 +1,4 @@
-	package com.myPackage;
+package com.myPackage;
 
 import java.io.IOException;
 
@@ -20,13 +20,14 @@ public class RegisterServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get the form values
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String firstname = request.getParameter("firstname");
         String lastname = request.getParameter("lastname");
 
         // Create Users object
-        Users user = new Users(username,password,firstname, lastname);
+        Users user = new Users(username, password, firstname, lastname);
 
         // Hibernate code to save the user
         SessionFactory factory = new Configuration()

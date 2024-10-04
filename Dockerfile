@@ -11,7 +11,9 @@ RUN git clone --depth=1 https://github.com/d2h5a0r5a0n3/hibernate-project1.git
 
 # Change directory and build the project
 WORKDIR /hibernate-project1
-RUN mvn clean package -DskipTests
+RUN mvn clean install
+RUN mvn clean package
+
 
 # Stage 2: Runtime Stage
 FROM tomcat:9-jre11
