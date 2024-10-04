@@ -5,9 +5,9 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "9092:9092"  # Exposing Tomcat port 9092
+      - "9092:9092"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://192.168.56.25:3306/hibernate
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/hibernate
       - SPRING_DATASOURCE_USERNAME=hibernate-user
       - SPRING_DATASOURCE_PASSWORD=Dharan@123
     depends_on:
@@ -28,3 +28,5 @@ services:
       test: ["CMD", "mysqladmin", "ping", "--silent"]
       interval: 10s
       retries: 5
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql

@@ -2,18 +2,16 @@
 FROM openjdk:11 AS BUILD_IMAGE
 
 # Install Maven
-RUN apt update && apt install -y maven git
+RUN apt update && apt install -y maven
 
-RUN git config --global http.postBuffer 1048576000  # 1 GB
+# Set the working directory
+WORKDIR /app
 
-# Clone the repository
-RUN git clone --depth=1 https://github.com/d2h5a0r5a0n3/hibernate-project1.git
+# Copy the local Maven project files into the container
+COPY . .
 
-# Change directory and build the project
-WORKDIR /hibernate-project1
-RUN mvn clean install
-RUN mvn clean package
-
+# Build the project
+RUN mvn clean package -DskipTests
 
 # Stage 2: Runtime Stage
 FROM tomcat:9-jre11
@@ -22,7 +20,7 @@ FROM tomcat:9-jre11
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copy the WAR file from the build stage to Tomcat's webapps directory
-COPY --from=BUILD_IMAGE /hibernate-project1/target/hibernate-project.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=BUILD_IMAGE /app/target/hibernate-project.war /usr/local/tomcat/webapps/ROOT.war
 
 # Change Tomcat's server port to 9092
 RUN sed -i 's/8080/9092/g' /usr/local/tomcat/conf/server.xml
