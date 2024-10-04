@@ -18,13 +18,28 @@ pipeline {
         stage('Kill Existing Processes') {
             steps {
                 script {
-                    // Kill processes using port 3306 and 9092
+                    // Kill processes using port 3306 and 9092 if they are allocated
                     bat '''
+                    SET "MYSQL_PID="
                     FOR /F "tokens=5" %%a IN ('netstat -ano ^| findstr :%MYSQL_PORT%') DO (
-                        taskkill /F /PID %%a
+                        SET "MYSQL_PID=%%a"
                     )
+                    IF DEFINED MYSQL_PID (
+                        echo "Killing MySQL process on port %MYSQL_PORT% with PID %MYSQL_PID%"
+                        taskkill /F /PID %MYSQL_PID%
+                    ) ELSE (
+                        echo "No process found on port %MYSQL_PORT%"
+                    )
+                    
+                    SET "TOMCAT_PID="
                     FOR /F "tokens=5" %%a IN ('netstat -ano ^| findstr :%TOMCAT_PORT%') DO (
-                        taskkill /F /PID %%a
+                        SET "TOMCAT_PID=%%a"
+                    )
+                    IF DEFINED TOMCAT_PID (
+                        echo "Killing Tomcat process on port %TOMCAT_PORT% with PID %TOMCAT_PID%"
+                        taskkill /F /PID %TOMCAT_PID%
+                    ) ELSE (
+                        echo "No process found on port %TOMCAT_PORT%"
                     )
                     '''
                 }
