@@ -31,7 +31,7 @@ pipeline {
         stage('Run Docker Compose') {
             steps {
                 script {
-                    bat 'docker-compose build   '
+                    bat 'docker-compose build --no-cache'
                     bat 'docker-compose up'
                 }
             }
