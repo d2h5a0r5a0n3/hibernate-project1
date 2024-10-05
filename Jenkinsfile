@@ -32,7 +32,7 @@ pipeline {
             steps {
                 script {
                     bat 'docker-compose build --no-cache'
-                    bat 'docker-compose up'
+                    bat 'docker-compose up -d'
                 }
             }
         }
