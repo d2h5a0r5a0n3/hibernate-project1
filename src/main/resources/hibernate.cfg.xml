@@ -9,7 +9,7 @@
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <!-- Updated MySQL URL with VM IP -->  
-        <property name="connection.url">jdbc:mysql://mysql:3306/hibernate</property>
+        <property name="connection.url">jdbc:mysql://192.168.56.25:3306/hibernate</property>
         <property name="connection.username">hibernate-user</property>
         <property name="connection.password">Dharan@123</property>	 
            
