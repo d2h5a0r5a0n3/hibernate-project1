@@ -3,9 +3,7 @@ FROM openjdk:11 AS BUILD_IMAGE
 RUN apt update && apt install -y maven git
 RUN git config --global http.postBuffer 1048576000
 RUN git clone --depth=1 https://github.com/d2h5a0r5a0n3/hibernate-project1.git
-# COPY pom.xml .
 WORKDIR /hibernate-project1
-RUN mvn dependency:go-offline
 RUN mvn clean install
 RUN mvn clean package
 # Stage 2: Runtime Stage
