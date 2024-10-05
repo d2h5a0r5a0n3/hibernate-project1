@@ -1,61 +1,99 @@
-/* styles.css */
-
 /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    background: url('https://i.pinimg.com/736x/e9/31/b0/e931b043748ce035ccbde0273e5ca3dd.jpg') no-repeat center center/cover; /* Background image from URL */
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-}
-
+/* Form Container */
 form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    width: 300px;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 30px;
+    border: 2px solid #2BB673;  /* Added border */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin: 20px; /* Added spacing outside */
 }
 
+/* Form Heading */
+h1 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #2BB673;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* Input Labels */
 label {
     font-size: 14px;
-    color: #333;
+    color: #666;
+    display: block;
+    text-align: left;
     margin-bottom: 5px;
-    display: inline-block;
 }
 
+/* Input Fields */
 input[type="text"],
 input[type="password"] {
     width: 100%;
-    padding: 8px;
+    padding: 12px;
+    border-radius: 25px;
+    border: 1px solid #ddd;
     margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #2BB673;
+}
+
+/* Submit Button */
 input[type="submit"] {
+    padding: 12px 0;
     width: 100%;
-    padding: 10px;
-    background-color: #28a745;
-    border: none;
-    border-radius: 5px;
+    background-color: #2BB673;
     color: white;
-    font-size: 16px;
+    border: none;
+    border-radius: 25px;
     cursor: pointer;
+    font-size: 16px;
     transition: background-color 0.3s ease;
 }
 
 input[type="submit"]:hover {
-    background-color: #218838;
+    background-color: #218a5a;
+}
+
+/* Form Hover Effect */
+form:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Responsive Design */
